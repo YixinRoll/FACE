@@ -9,9 +9,7 @@ train:
   save_model: true
   loss: pairwise
   test_step: 1
-  reproducible: true
-  seed: 256
-  patience: 5
+  patience: 10
 
 test:
   metrics: [recall, ndcg]
@@ -20,10 +18,8 @@ test:
 
 data:
   type: general_cf
-  name: amazon
 
 model:
-  name: simgcl
   keep_rate: 1.0
   embedding_size: 256
   

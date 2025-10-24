@@ -47,23 +47,23 @@ class LightGCN_plus_vq(BaseModel):
         self.vq_weight = self.hyper_config['vq_weight']
         self.recons_weight = self.hyper_config['recons_weight']
         self.align_weight = self.hyper_config['align_weight']
-        self.vqraf = VQRAF(input_dim=self.embedding_size, word_num=self.word_num, word_dim = self.word_dim)
+        self.vqraf = VQRAF(input_dim=self.embedding_size, word_num=self.word_num, word_dim = self.word_dim, dataset_name = configs['data']['name'], llm_name=configs['llm'])
 
-        if "load_model" in configs['optimizer']:
-            model_name = configs['optimizer']["load_model"]
-            save_dir_path = './encoder/checkpoint/{}'.format(model_name)
-            self._load_parameters('{}/{}-{}-{}.pth'.format(save_dir_path, model_name, configs['data']['name'], configs['train']['seed']))
-            print("Successfully load model from {}".format('{}/{}-{}-{}.pth'.format(save_dir_path, configs['optimizer']["load_model"], configs['data']['name'], configs['train']['seed'])))
-
+        if configs["stage"] == "map":
+            load_model_name = configs["model"]["name"][:-3]
+            load_model_path = f"./encoder/checkpoint/{load_model_name}/{load_model_name}-{configs['data']['name']}-{configs['train']['seed']}.pth"
+            self.load_state_dict(t.load(load_model_path), strict=False)
+            print(f"Successfully load model from {load_model_path}")
+        else:
+            load_model_name = configs["model"]["name"]
+            load_model_path = f"./encoder/checkpoint/{load_model_name}/{load_model_name}-{configs['data']['name']}-{configs['train']['seed']}_map.pth"
+            self.load_state_dict(t.load(load_model_path))
+            print(f"Successfully load model from {load_model_path}")
+            
     def _init_weight(self):
         for m in self.mlp:
             if isinstance(m, nn.Linear):
                 init(m.weight)
-
-    def _load_parameters(self, path):
-        params = t.load(path)
-        self.user_embeds = nn.Parameter(params['user_embeds'])
-        self.item_embeds = nn.Parameter(params['item_embeds'])
     
     def _propagate(self, adj, embeds):
         return t.spmm(adj, embeds)
@@ -106,7 +106,7 @@ class LightGCN_plus_vq(BaseModel):
 
         # do vq
         entity_embeds = t.cat([anc_embeds, pos_embeds, neg_embeds], dim=0)
-        entity_embeds_vq, vq_loss, recons_loss, colla_repre = self.vqraf(entity_embeds)
+        entity_embeds_vq, vq_loss, recons_loss, colla_repre = self.vqraf(entity_embeds, configs["stage"])
 
         # get the semantic representations
         ancprf_repre, posprf_repre, negprf_repre = self._pick_embeds(self.usrprf_repre, self.itmprf_repre, batch_data)

@@ -2,19 +2,15 @@ optimizer:
   name: adam
   lr: 1.0e-3
   weight_decay: 0
-  load_model: dccf
-  mode: finetune
 
 train:
   epoch: 3000
-  batch_size: 4096
+  batch_size: 256
   save_model: true
   loss: pairwise
   test_step: 1
-  reproducible: true
-  seed: 256
-  patience: 5
-
+  patience: 10
+  
 test:
   metrics: [recall, ndcg]
   k: [5, 10, 20]
@@ -22,53 +18,38 @@ test:
 
 data:
   type: general_cf
-  name: amazon
 
 model:
-  name: dccf_vq
-  embedding_size: 128
-  intent_num: 64
+  embedding_size: 256
 
-  # data-specific parameters here
-  layer_num: 2
-  reg_weight: 1.0e-4
-  cl_weight: 1.0e-3
-  temperature: 0.1
-  word_num: 8
+  reg_weight: 1.0e-6
+  word_num: 16
   word_dim: 256
   vq_weight: 1.0
   recons_weight: 1.0
   align_weight: 1.0e-1
   # for amazon
   amazon:
-    layer_num: 2
-    reg_weight: 1.0e-4
-    cl_weight: 1.0e-3
-    temperature: 0.1
-    word_num: 8
+    reg_weight: 1.0e-6
+    word_num: 16
     word_dim: 256
     vq_weight: 1.0
     recons_weight: 1.0
     align_weight: 1.0e-1
   # for yelp
   yelp:
-    layer_num: 2
-    reg_weight: 1.0e-4
-    cl_weight: 1.0e-3
-    temperature: 0.1
-    word_num: 8
+    reg_weight: 1.0e-6
+    word_num: 16
     word_dim: 256
     vq_weight: 1.0
     recons_weight: 1.0
     align_weight: 1.0e-1
   # for steam
   steam:
-    layer_num: 3
-    reg_weight: 1.0e-3
-    cl_weight: 1.0e-3
-    temperature: 0.1
-    word_num: 8
+    reg_weight: 1.0e-6
+    word_num: 16
     word_dim: 256
     vq_weight: 1.0
     recons_weight: 1.0
     align_weight: 1.0e-1
+

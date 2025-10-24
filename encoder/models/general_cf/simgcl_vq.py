@@ -6,7 +6,7 @@ from models.general_cf.lightgcn_vq import LightGCN_vq
 from models.loss_utils import cal_bpr_loss, reg_params, cal_infonce_loss, cal_align_loss
 
 init = nn.init.xavier_uniform_
-uniformInit = nn.init.uniform
+uniformInit = nn.init.uniform_
 
 class SimGCL_vq(LightGCN_vq):
     def __init__(self, data_handler):
@@ -34,14 +34,7 @@ class SimGCL_vq(LightGCN_vq):
             embeds_list.append(embeds)
         embeds = sum(embeds_list)
         return embeds[:self.user_num], embeds[self.user_num:]
-    
-    def _pick_embeds(self, user_embeds, item_embeds, batch_data):
-        ancs, poss, negs = batch_data
-        anc_embeds = user_embeds[ancs]
-        pos_embeds = item_embeds[poss]
-        neg_embeds = item_embeds[negs]
-        return anc_embeds, pos_embeds, neg_embeds
-        
+            
     def cal_loss(self, batch_data):
         self.is_training = True
         user_embeds1, item_embeds1 = self.forward(self.adj, perturb=True)
@@ -54,7 +47,7 @@ class SimGCL_vq(LightGCN_vq):
 
         # do vq
         entity_embeds = t.cat([anc_embeds3, pos_embeds3, neg_embeds3], dim=0)
-        entity_embeds_vq, vq_loss, recons_loss, colla_repre = self.vqraf(entity_embeds)
+        entity_embeds_vq, vq_loss, recons_loss, colla_repre = self.vqraf(entity_embeds, configs["stage"])
 
         # get the semantic representations
         ancprf_repre, posprf_repre, negprf_repre = self._pick_embeds(self.usrprf_repre, self.itmprf_repre, batch_data)

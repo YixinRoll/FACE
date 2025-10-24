@@ -1,14 +1,31 @@
 import torch as t
 import torch.nn.functional as F
-import wandb
+import swanlab
 
 def cal_align_loss(A, B, temperature=0.02):
-    sim_matrix = F.cosine_similarity(A.unsqueeze(1), B.unsqueeze(0), dim=-1) # -1~1
-    # wandb.log({"diag_avg": t.diag(sim_matrix).mean(), 
+    if A is None:
+        return t.tensor(0.0, device=B.device)
+    sim_matrix = A @ B.T
+    # swanlab.log({"diag_avg": t.diag(sim_matrix).mean(), 
     #            "non_diag_avg": (sim_matrix.sum() - t.diag(sim_matrix).sum()) / (sim_matrix.shape[0] * sim_matrix.shape[1] - sim_matrix.shape[0])})
-    sim_matrix_scaled = t.exp(sim_matrix / temperature)
-    loss = - t.mean(t.log(t.diag(sim_matrix_scaled) / t.sum(sim_matrix_scaled, dim=1)))
+    sim_matrix = sim_matrix / temperature
+    labels = t.arange(sim_matrix.size(0), device=sim_matrix.device)
+    loss = F.cross_entropy(sim_matrix, labels)
     return loss
+
+# sim_matrix = A @ B.T / temperature
+# sim_matrix_scaled = t.exp(sim_matrix)
+# loss = - t.mean(t.log(t.diag(sim_matrix_scaled) / t.sum(sim_matrix_scaled, dim=1)))
+
+# def contrastive_loss(logits):
+#     return F.cross_entropy(logits, t.arange(len(logits), device=logits.device))
+
+# def cal_align_loss(A, B, temperature=0.02):
+#     scaled_sim_matrix = t.matmul(A, B.T) / temperature
+#     loss = (contrastive_loss(scaled_sim_matrix) + contrastive_loss(scaled_sim_matrix.T))/2
+#     return loss
+
+
 
 
 def cal_bpr_loss(anc_embeds, pos_embeds, neg_embeds):

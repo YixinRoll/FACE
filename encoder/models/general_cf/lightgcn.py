@@ -7,7 +7,7 @@ from models.base_model import BaseModel
 from models.model_utils import SpAdjEdgeDrop
 
 init = nn.init.xavier_uniform_
-uniformInit = nn.init.uniform
+uniformInit = nn.init.uniform_
 
 class LightGCN(BaseModel):
     def __init__(self, data_handler):
@@ -22,9 +22,6 @@ class LightGCN(BaseModel):
 
         # hyper-parameter
         self.layer_num = self.hyper_config['layer_num']
-
-        self.usrprf_repre = t.tensor(configs['usrprf_repre']).float().cuda()
-        self.itmprf_repre = t.tensor(configs['itmprf_repre']).float().cuda()
     
     def _propagate(self, adj, embeds):
         return t.spmm(adj, embeds)

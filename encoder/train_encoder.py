@@ -4,11 +4,12 @@ from models.bulid_model import build_model
 from trainer.logger import Logger
 from data_utils.build_data_handler import build_data_handler
 from trainer.build_trainer import build_trainer
-import wandb
 
 if __name__ == '__main__':
 
-    wandb.init(project = f"VQRAF_{configs['data']['name']}", config = configs, name = configs['model']['name'])
+    # Third Step: Create logger
+    logger = Logger(configs)
+
     # First Step: Create data_handler
     init_seed()
     data_handler = build_data_handler()
@@ -16,9 +17,6 @@ if __name__ == '__main__':
 
     # Second Step: Create model
     model = build_model(data_handler).to(configs['device'])
-
-    # Third Step: Create logger
-    logger = Logger()
 
     # Fourth Step: Create trainer
     trainer = build_trainer(data_handler, logger)

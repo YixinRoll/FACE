@@ -2,18 +2,14 @@ optimizer:
   name: adam
   lr: 1.0e-3
   weight_decay: 0
-  load_model: simgcl
-  mode: finetune
 
 train:
   epoch: 3000
-  batch_size: 128
+  batch_size: 256
   save_model: true
   loss: pairwise
   test_step: 1
-  reproducible: true
-  seed: 256
-  patience: 5
+  patience: 10
 
 test:
   metrics: [recall, ndcg]
@@ -22,10 +18,8 @@ test:
 
 data:
   type: general_cf
-  name: amazon
 
 model:
-  name: simgcl_vq
   keep_rate: 1.0
   embedding_size: 256
 
@@ -34,7 +28,7 @@ model:
   cl_weight: 1.0e-1
   temperature: 0.2
   eps: 0.9
-  word_num: 8
+  word_num: 16
   word_dim: 256
   vq_weight: 1.0
   recons_weight: 1.0
@@ -46,7 +40,7 @@ model:
     cl_weight: 1.0e-1
     temperature: 0.2
     eps: 0.9
-    word_num: 8
+    word_num: 16
     word_dim: 256
     vq_weight: 1.0
     recons_weight: 1.0
@@ -58,7 +52,7 @@ model:
     cl_weight: 1.0e-1
     temperature: 0.2
     eps: 0.9
-    word_num: 8
+    word_num: 16
     word_dim: 256
     vq_weight: 1.0
     recons_weight: 1.0
@@ -70,7 +64,7 @@ model:
     cl_weight: 1.0e-1
     temperature: 0.5
     eps: 0.2
-    word_num: 8
+    word_num: 16
     word_dim: 256
     vq_weight: 1.0
     recons_weight: 1.0

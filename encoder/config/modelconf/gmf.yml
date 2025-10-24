@@ -20,20 +20,15 @@ data:
   type: general_cf
 
 model:
-  keep_rate: 0.8
   embedding_size: 256
 
-  layer_num: 3
   reg_weight: 1.0e-6
   # for amazon
   amazon:
-    layer_num: 3
     reg_weight: 1.0e-6
   # for yelp
   yelp:
-    layer_num: 3
     reg_weight: 1.0e-6
   # for steam
   steam:
-    layer_num: 2
     reg_weight: 1.0e-6
