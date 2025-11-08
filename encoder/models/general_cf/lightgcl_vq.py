@@ -5,7 +5,7 @@ from models.base_model import BaseModel
 from config.configurator import configs
 from models.aug_utils import SvdDecomposition
 from models.loss_utils import cal_bpr_loss, reg_params, cal_align_loss
-from vqraf import VQRAF
+from FACE import FACE
 
 init = nn.init.xavier_uniform_
 uniformInit = nn.init.uniform_
@@ -46,7 +46,7 @@ class LightGCL_vq(BaseModel):
         self.vq_weight = self.hyper_config['vq_weight']
         self.recons_weight = self.hyper_config['recons_weight']
         self.align_weight = self.hyper_config['align_weight']
-        self.vqraf = VQRAF(input_dim=self.embedding_size, word_num=self.word_num, word_dim = self.word_dim, dataset_name = configs['data']['name'], llm_name=configs['llm'])
+        self.vqraf = FACE(input_dim=self.embedding_size, word_num=self.word_num, word_dim = self.word_dim, dataset_name = configs['data']['name'], llm_name=configs['llm'])
 
         if configs["stage"] == "map":
             load_model_name = configs["model"]["name"][:-3]

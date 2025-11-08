@@ -192,7 +192,7 @@ class LinearLayer(nn.Module):
         return x
     
 
-class VQRAF(nn.Module):
+class FACE(nn.Module):
     def __init__(self, input_dim, word_num, word_dim, dataset_name, llm_name):
         super().__init__()
         self.input_dim = input_dim

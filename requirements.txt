@@ -1,0 +1,12 @@
+mteb==2.1.0
+numpy==1.22.4
+pandas==2.3.3
+PyYAML==6.0.2
+scipy==1.16.2
+swanlab==0.6.13
+tokenizers==0.22.1
+torch==1.13.1
+torch_sparse==0.6.17+pt113cu117
+torch_xla==2.8.1
+tqdm==4.66.5
+transformers==4.46.0

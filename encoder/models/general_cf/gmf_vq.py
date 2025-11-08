@@ -1,5 +1,5 @@
 import torch as t
-from vqraf import VQRAF
+from FACE import FACE
 import numpy as np
 import torch.nn as nn
 import scipy.sparse as sp
@@ -27,7 +27,7 @@ class GMF_vq(BaseModel):
         self.vq_weight = self.hyper_config['vq_weight']
         self.recons_weight = self.hyper_config['recons_weight']
         self.align_weight = self.hyper_config['align_weight']
-        self.vqraf = VQRAF(input_dim=self.embedding_size, word_num=self.word_num, word_dim = self.word_dim, dataset_name = configs['data']['name'], llm_name=configs['llm'])
+        self.vqraf = FACE(input_dim=self.embedding_size, word_num=self.word_num, word_dim = self.word_dim, dataset_name = configs['data']['name'], llm_name=configs['llm'])
 
         if configs["stage"] == "map":
             load_model_name = configs["model"]["name"][:-3]
