@@ -24,7 +24,7 @@ pip install -r requirements.txt
 
 ### 2.2. Preparations
 
-+ **datasets:** Download the dataset from https://drive.google.com/file/d/1PzePFsBcYofG1MV2FisFLBM2lMytbMdW/view?usp=sharing
++ **datasets:** Download the dataset from https://drive.google.com/file/d/1PzePFsBcYofG1MV2FisFLBM2lMytbMdW/view?usp=sharing (From [RLMRec](https://github.com/HKUDS/RLMRec))
 + **embedding model:** Download the pretrained MiniLM embedding model from https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2 
 + **generate summary embeddings:** Use `generation/generate_repre_miniLM.py`for generating summary embeddings for all users & items
 
